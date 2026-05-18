@@ -21,5 +21,7 @@ class Contract(Base):
     start_date: Mapped[date] = mapped_column(Date, nullable=False)
     end_date: Mapped[date] = mapped_column(Date, nullable=True)
     gross_salary: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
-
+    onss_employee_rate: Mapped[Decimal] = mapped_column(Numeric(5, 2), nullable=False, default=13.07)
+    onss_employer_rate: Mapped[Decimal] = mapped_column(Numeric(5, 2), nullable=False, default=27.00)
+    precompte_rate: Mapped[Decimal] = mapped_column(Numeric(5, 2), nullable=False, default=26.75)
     worker: Mapped["Worker"] = relationship("Worker", back_populates="contract")
