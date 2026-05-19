@@ -1,11 +1,15 @@
-from datetime import date
-from decimal import Decimal
-
+from __future__ import annotations
 from Models.Worker import Worker
 from db.database import Base
 from sqlalchemy import ForeignKey, String, Numeric, Enum, Date
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from enum import Enum as PyEnum
+from datetime import date
+from decimal import Decimal
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from Models.Payslip import Payslip
 
 class ContractType(PyEnum):
     EMPLOYEE = "employee"
@@ -24,4 +28,6 @@ class Contract(Base):
     onss_employee_rate: Mapped[Decimal] = mapped_column(Numeric(5, 2), nullable=False, default=13.07)
     onss_employer_rate: Mapped[Decimal] = mapped_column(Numeric(5, 2), nullable=False, default=27.00)
     precompte_rate: Mapped[Decimal] = mapped_column(Numeric(5, 2), nullable=False, default=26.75)
+
     worker: Mapped["Worker"] = relationship("Worker", back_populates="contract")
+    payslips: Mapped[list["Payslip"]] = relationship("Payslip", back_populates="contract")

@@ -33,3 +33,4 @@ class Payslip(Base):
 
     worker: Mapped["Worker"] = relationship("Worker", back_populates="payslips")
     contract: Mapped["Contract"] = relationship("Contract", back_populates="payslips")
+    
