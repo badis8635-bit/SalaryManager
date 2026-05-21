@@ -37,8 +37,9 @@ class ContractService:
         if end_date and end_date <= start_date:
             raise ValueError("La date de fin doit être après la date de début")
 
-        if contract_type == ContractType.CDI and end_date:
-            raise ValueError("Un CDI ne peut pas avoir de date de fin")
+        # EMPLOYEE = contrat sans date de fin (équivalent CDI)
+        if contract_type == ContractType.EMPLOYEE and end_date:
+            raise ValueError("Un contrat EMPLOYEE ne peut pas avoir de date de fin")
 
         contract = Contract(
             worker_id=worker_id,
@@ -106,8 +107,8 @@ class ContractService:
         if not contract:
             raise ValueError(f"Aucun contrat trouvé pour le worker {worker_id}")
 
-        if contract.contract_type == ContractType.CDI:
-            raise ValueError("Un CDI ne peut pas avoir de date de fin, utilisez la désactivation du worker")
+        if contract.contract_type == ContractType.EMPLOYEE:
+            raise ValueError("Un contrat EMPLOYEE ne peut pas être terminé ainsi, désactivez le worker")
 
         if end_date <= contract.start_date:
             raise ValueError("La date de fin doit être après la date de début")

@@ -18,7 +18,6 @@ class Payslip(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     worker_id: Mapped[int] = mapped_column(ForeignKey('worker.id'), nullable=False)
     contract_id: Mapped[int] = mapped_column(ForeignKey('contract.id'), nullable=False)
-    amount: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
     period_month: Mapped[int] = mapped_column(nullable=False)
     period_year: Mapped[int] = mapped_column(nullable=False)
     status: Mapped[PayslipStatus] = mapped_column(Enum(PayslipStatus), nullable=False, default=PayslipStatus.PENDING)

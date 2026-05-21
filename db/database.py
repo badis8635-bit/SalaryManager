@@ -1,18 +1,18 @@
-import os
-from dotenv import load_dotenv
+from sqlalchemy.engine import URL
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-load_dotenv()
+DATABASE_URL = URL.create(
+    drivername="postgresql+pg8000",
+    username="postgres",
+    password="postgres",
+    host="localhost",
+    port=5432,
+    database="SalaryManager"
+)
 
-DATABASE_URL = os.getenv('DATABASE_URL')
-
-# On crée l'engine
 engine = create_engine(DATABASE_URL, echo=True)
-
-# On crée l'usine à sessions
 SessionLocal = sessionmaker(bind=engine)
 
-# ON DÉFINIT LA CLASSE BASE ICI
 class Base(DeclarativeBase):
     pass
