@@ -7,7 +7,6 @@ import Payslips from './pages/Payslips'
 import Period from './pages/Period'
 import Layout from './components/Layout'
 
-// Route protégée : redirige vers /login si pas connecté
 function PrivateRoute({ children }) {
   const { token } = useAuth()
   return token ? children : <Navigate to="/login" />
@@ -19,16 +18,12 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={
-            <PrivateRoute>
-              <Layout />
-            </PrivateRoute>
-          }>
+          <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
             <Route index element={<Navigate to="/workers" />} />
-            <Route path="workers" element={<Workers />} />
+            <Route path="workers"   element={<Workers />} />
             <Route path="contracts" element={<Contracts />} />
-            <Route path="payslips" element={<Payslips />} />
-            <Route path="period" element={<Period />} />
+            <Route path="payslips"  element={<Payslips />} />
+            <Route path="period"    element={<Period />} />
           </Route>
         </Routes>
       </BrowserRouter>
