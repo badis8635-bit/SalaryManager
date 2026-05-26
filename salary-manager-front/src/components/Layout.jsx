@@ -2,10 +2,11 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 const nav = [
-  { to: '/workers',   label: 'Employés',         icon: '⊡' },
-  { to: '/contracts', label: 'Contrats',          icon: '⊠' },
-  { to: '/payslips',  label: 'Fiches de paie',    icon: '⊟' },
-  { to: '/period',    label: 'Période salariale',  icon: '⊞' },
+  { to: '/dashboard', label: 'Tableau de bord',   icon: '▪' },
+  { to: '/workers',   label: 'Employés',           icon: '▫' },
+  { to: '/contracts', label: 'Contrats',            icon: '▫' },
+  { to: '/payslips',  label: 'Fiches de paie',      icon: '▫' },
+  { to: '/period',    label: 'Période salariale',   icon: '▫' },
 ]
 
 export default function Layout() {
@@ -14,8 +15,6 @@ export default function Layout() {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg)' }}>
-
-      {/* Sidebar */}
       <aside style={{
         width: '232px', flexShrink: 0,
         background: 'var(--surface)',
@@ -35,7 +34,7 @@ export default function Layout() {
 
         {/* Nav */}
         <nav style={{ flex: 1, padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
-          {nav.map(({ to, label, icon }) => (
+          {nav.map(({ to, label }) => (
             <NavLink key={to} to={to} style={({ isActive }) => ({
               display: 'flex', alignItems: 'center', gap: '10px',
               padding: '9px 12px', borderRadius: '6px',
@@ -47,7 +46,6 @@ export default function Layout() {
               transition: 'all 0.12s',
               borderLeft: isActive ? '2px solid var(--accent)' : '2px solid transparent',
             })}>
-              <span style={{ fontSize: '13px', opacity: 0.7 }}>{icon}</span>
               {label}
             </NavLink>
           ))}
@@ -67,13 +65,12 @@ export default function Layout() {
             onMouseEnter={e => { e.currentTarget.style.color = 'var(--danger)'; e.currentTarget.style.borderColor = 'var(--danger)'; e.currentTarget.style.background = 'var(--danger-l)' }}
             onMouseLeave={e => { e.currentTarget.style.color = 'var(--muted)';  e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'transparent' }}
           >
-            <span style={{ fontSize: '13px' }}>↪</span> Déconnexion
+            ↪ Déconnexion
           </button>
         </div>
       </aside>
 
-      {/* Main */}
-      <main style={{ marginLeft: '232px', flex: 1, padding: '40px 48px', minWidth: 0, maxWidth: '1100px' }}>
+      <main style={{ marginLeft: '232px', flex: 1, padding: '40px 48px', minWidth: 0, maxWidth: '1200px' }}>
         <Outlet />
       </main>
     </div>
