@@ -1,17 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Syne:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@300;400;500&family=Geist:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 :root {
-  --bg: #0f0f0f;
-  --surface: #1a1a1a;
-  --surface2: #242424;
-  --border: #2e2e2e;
-  --accent: #e8ff47;
-  --accent2: #47c8ff;
-  --text: #f0f0f0;
-  --muted: #6b6b6b;
-  --danger: #ff4747;
-  --success: #47ff9c;
+  --bg:       #f7f6f3;
+  --surface:  #ffffff;
+  --surface2: #f0ede8;
+  --border:   #e2ddd6;
+  --border2:  #ccc8c0;
+  --text:     #1a1916;
+  --text2:    #4a4844;
+  --muted:    #9a958e;
+  --accent:   #2a5c45;
+  --accent-l: #e8f0ec;
+  --danger:   #c0392b;
+  --danger-l: #fdf0ee;
+  --warn:     #8a6c1a;
+  --warn-l:   #fdf8ec;
+  --paid:     #1a4d35;
+  --paid-l:   #e6f2ec;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,24 +25,26 @@
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'DM Mono', monospace;
+  font-family: 'Geist', sans-serif;
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
 }
 
-h1, h2, h3, .syne { font-family: 'Syne', sans-serif; }
+.serif { font-family: 'Instrument Serif', serif; }
+.mono  { font-family: 'Geist Mono', monospace; }
 
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.fade-up { animation: fadeUp 0.35s ease forwards; }
+.fade-up { animation: fadeUp 0.3s ease forwards; }
 
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.3; }
+input, select {
+  font-family: 'Geist', sans-serif;
+  letter-spacing: -0.01em;
 }
