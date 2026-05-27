@@ -4,11 +4,10 @@ from db.database import SessionLocal
 from Services.WorkerService import WorkerService
 from Models.Worker import WorkerType
 from pydantic import BaseModel, EmailStr  # type: ignore[import]
-from decimal import Decimal
+from auth import create_employee_token
 
 router = APIRouter(prefix="/workers", tags=["Workers"])
 
-# Dependency injection de la session
 def get_db():
     db = SessionLocal()
     try:
@@ -16,7 +15,7 @@ def get_db():
     finally:
         db.close()
 
-# --- Schemas Pydantic ---
+# --- Schemas ---
 
 class WorkerCreate(BaseModel):
     email: EmailStr
@@ -31,11 +30,24 @@ class WorkerResponse(BaseModel):
     last_name: str
     worker_type: WorkerType
     is_active: bool
-
     class Config:
         from_attributes = True
 
-# --- Routes ---
+class SetPasswordRequest(BaseModel):
+    password: str
+
+class WorkerLoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+class WorkerTokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    worker_id: int
+    first_name: str
+    last_name: str
+
+# --- Routes existantes ---
 
 @router.get("/", response_model=list[WorkerResponse])
 def get_all_workers(db: Session = Depends(get_db)):
@@ -90,5 +102,31 @@ def delete_worker(worker_id: int, db: Session = Depends(get_db)):
     service = WorkerService(db)
     try:
         service.delete_worker(worker_id)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+# --- Nouvelles routes (rôles) ---
+
+@router.post("/login", response_model=WorkerTokenResponse)
+def worker_login(payload: WorkerLoginRequest, db: Session = Depends(get_db)):
+    """Login employé — retourne un JWT avec role: employee"""
+    service = WorkerService(db)
+    try:
+        worker = service.login(email=payload.email, password=payload.password)
+        return WorkerTokenResponse(
+            access_token=create_employee_token(worker.id),
+            worker_id=worker.id,
+            first_name=worker.first_name,
+            last_name=worker.last_name
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=401, detail=str(e))
+
+@router.patch("/{worker_id}/set-password", response_model=WorkerResponse)
+def set_worker_password(worker_id: int, payload: SetPasswordRequest, db: Session = Depends(get_db)):
+    """Permet à l'admin de définir le mot de passe d'un employé"""
+    service = WorkerService(db)
+    try:
+        return service.set_password(worker_id, payload.password)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
